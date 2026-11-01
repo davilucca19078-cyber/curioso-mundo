@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curioso Mundo — descubra algo novo</title>
+<style>
+:root{--bg:#0b1020;--panel:#151d33;--text:#f4f7ff;--muted:#aab5d0;--accent:#8b7cff;--cyan:#61d8e8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#1b2850 0%,var(--bg) 55%);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{max-width:1100px;margin:auto;padding:24px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-size:1.25rem;font-weight:850;letter-spacing:.2px}.brand span{color:var(--cyan)}nav{display:flex;gap:9px;flex-wrap:wrap}
+button{border:1px solid #34405f;background:#1a2541;color:var(--text);padding:10px 14px;border-radius:999px;cursor:pointer;font:inherit;transition:.18s}
+button:hover,button.active{background:var(--accent);border-color:var(--accent);transform:translateY(-1px)}
+main{max-width:1100px;margin:auto;padding:22px}
+.hero{padding:48px 28px 38px;border:1px solid #2c3858;border-radius:28px;background:linear-gradient(120deg,#222d55dd,#141b31ee);position:relative;overflow:hidden}
+.hero:after{content:"✦";position:absolute;right:5%;top:4%;font-size:9rem;color:#8b7cff22}
+.eyebrow{color:var(--cyan);font-weight:750;text-transform:uppercase;letter-spacing:2px;font-size:.78rem}
+h1{font-size:clamp(2.4rem,7vw,4.7rem);line-height:1.04;margin:12px 0 18px;max-width:700px}
+.hero p{color:var(--muted);max-width:600px;margin-bottom:24px}.primary{background:var(--accent);border-color:var(--accent);font-weight:750;padding:13px 19px}
+h2{font-size:1.5rem;margin:34px 0 14px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}
+.card{background:var(--panel);border:1px solid #293653;border-radius:20px;padding:20px;min-height:190px;display:flex;flex-direction:column;gap:10px}
+.icon{font-size:2rem}.tag{color:var(--cyan);font-size:.76rem;font-weight:750;text-transform:uppercase;letter-spacing:1px}
+.card h3{margin:0;font-size:1.13rem}.card p{margin:0;color:var(--muted)}
+.random{margin-top:20px;background:#192541;border:1px solid #354467;border-radius:22px;padding:24px}
+.random h3{margin:8px 0}.random p{color:var(--muted);margin-bottom:0}
+footer{text-align:center;color:var(--muted);padding:35px 18px;font-size:.9rem}
+#search{width:100%;max-width:360px;background:#121a2e;border:1px solid #34405f;border-radius:999px;color:white;padding:12px 16px;font:inherit}
+.tools{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:22px 0}
+@media(max-width:600px){header{padding:18px}main{padding:16px}.hero{padding:32px 20px}.hero:after{font-size:5rem}.tools{align-items:stretch}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">✦ <span>Curioso</span> Mundo</div>
+  <nav><button class="active" data-filter="Tudo">Tudo</button><button data-filter="Ciência">Ciência</button><button data-filter="História">História</button><button data-filter="Natureza">Natureza</button><button data-filter="Espaço">Espaço</button></nav>
+</header>
+<main>
+<section class="hero">
+  <div class="eyebrow">Seu portal de descobertas</div>
+  <h1>O mundo é mais curioso do que parece.</h1>
+  <p>Fatos surpreendentes sobre ciência, história, natureza, espaço e muito mais. Explore, descubra e compartilhe uma nova curiosidade a cada visita.</p>
+  <button class="primary" id="surpriseTop">✨ Me surpreenda!</button>
+</section>
+<div class="tools">
+  <h2 style="margin:0">Curiosidades para explorar</h2>
+  <input id="search" type="search" placeholder="Buscar uma curiosidade…">
+</div>
+<div class="filters" id="filters"></div>
+<section class="grid" id="cards"></section>
+<section class="random" aria-live="polite">
+  <div class="eyebrow">Curiosidade aleatória</div>
+  <h3 id="randomTitle">Clique em “Me surpreenda!”</h3>
+  <p id="randomText">Uma descoberta inesperada está esperando por você.</p>
+  <div style="margin-top:16px"><button id="another">Outra curiosidade ↗</button></div>
+</section>
+</main>
+<footer>Curioso Mundo · Conhecimento para todos os dias ✦</footer>
+<script>
+const facts=[
+{cat:"Ciência",icon:"🧪",title:"O mel pode durar muito tempo",text:"Quando armazenado corretamente, o mel tem baixa umidade e acidez que dificultam o crescimento de muitos microrganismos."},
+{cat:"Espaço",icon:"🪐",title:"Um dia em Vênus é enorme",text:"Vênus gira tão lentamente que sua rotação leva mais tempo do que sua volta ao redor do Sol."},
+{cat:"Natureza",icon:"🐙",title:"Polvos têm três corações",text:"Dois corações ajudam a levar sangue às brânquias; o terceiro envia sangue para o resto do corpo."},
+{cat:"História",icon:"📜",title:"Cleópatra viveu mais perto de nós",text:"Cleópatra viveu mais próxima da época da chegada do ser humano à Lua do que da construção da Grande Pirâmide de Gizé."},
+{cat:"Ciência",icon:"⚡",title:"Raios são extremamente quentes",text:"O ar ao redor de um raio pode ficar muito mais quente que a superfície do Sol por um instante."},
+{cat:"Natureza",icon:"🦋",title:"Borboletas sentem sabores com os pés",text:"Sensores nas patas ajudam algumas borboletas a identificar plantas adequadas para colocar seus ovos."},
+{cat:"Espaço",icon:"🌌",title:"O espaço não é totalmente silencioso",text:"O som precisa de um meio para viajar; por isso, o vácuo do espaço não transmite som como o ar da Terra."},
+{cat:"História",icon:"🧱",title:"A Grande Muralha não é uma linha única",text:"Ela é um conjunto de muralhas e fortificações construídas em diferentes períodos da história chinesa."},
+{cat:"Ciência",icon:"🧠",title:"O cérebro usa muita energia",text:"Embora represente uma pequena parte da massa corporal, o cérebro consome uma parcela significativa da energia do corpo em repouso."},
+{cat:"Natureza",icon:"🌳",title:"Árvores podem trocar sinais",text:"Plantas podem responder a sinais químicos e a interações subterrâneas com fungos; a complexidade dessas redes ainda é estudada."},
+{cat:"Espaço",icon:"☀️",title:"A luz do Sol demora a chegar",text:"A luz solar leva cerca de 8 minutos e 20 segundos para alcançar a Terra."},
+{cat:"História",icon:"🗓️",title:"A universidade é muito antiga",text:"A Universidade de Bolonha, na Itália, é tradicionalmente considerada uma das universidades mais antigas em funcionamento contínuo."}
+];
+let current="Tudo";
+const cards=document.querySelector("#cards"), search=document.querySelector("#search");
+function render(){const q=search.value.toLowerCase();const list=facts.filter(f=>(current==="Tudo"||f.cat===current)&&(f.title+" "+f.text+" "+f.cat).toLowerCase().includes(q));cards.innerHTML=list.map(f=>`<article class="card"><div class="icon">${f.icon}</div><div class="tag">${f.cat}</div><h3>${f.title}</h3><p>${f.text}</p></article>`).join("")||'<p>Nenhuma curiosidade encontrada. Tente outra busca.</p>';}
+function surprise(){const f=facts[Math.floor(Math.random()*facts.length)];document.querySelector("#randomTitle").textContent=f.icon+" "+f.title;document.querySelector("#randomText").textContent=f.text;}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{current=b.dataset.filter;document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b));render()}));
+search.addEventListener("input",render);document.querySelector("#another").addEventListener("click",surprise);document.querySelector("#surpriseTop").addEventListener("click",()=>{surprise();document.querySelector(".random").scrollIntoView({behavior:"smooth",block:"center"})});
+render();
+</script>
+</body>
+</html>
